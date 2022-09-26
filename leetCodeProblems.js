@@ -434,3 +434,183 @@ A valid BST is defined as follows:
         return dfs(root.left, min, root.val) && dfs(root.right, root.val, max)
     }
 };
+
+
+
+
+/*
+
+
+Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.
+
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes 
+p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+*/
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+ var lowestCommonAncestor = function(root, p, q) {
+    
+    // Lowest Common Ancestor bigger than both p and q so we move left
+    if (p.val < root.val && q.val < root.val) {
+      return lowestCommonAncestor(root.left, p, q);
+    }
+    // Lowest Common Ancestor small than both p and q so we move right
+    if (p.val > root.val && q.val > root.val) {
+      return lowestCommonAncestor(root.right, p, q);
+    }
+    return root;
+      
+  };
+
+
+
+/*
+
+An image is represented by an m x n integer grid image where image[i][j] represents the pixel value of the image.
+
+You are also given three integers sr, sc, and color. You should perform a flood fill on the image starting from the pixel image[sr][sc].
+
+To perform a flood fill, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, 
+plus any pixels connected 4-directionally to those pixels (also with the same color), and so on. Replace the color of all of the aforementioned pixels with color.
+
+*/
+
+/**
+ * @param {number[][]} image
+ * @param {number} sr
+ * @param {number} sc
+ * @param {number} color
+ * @return {number[][]}
+ */
+ var floodFill = function(image, sr, sc, color) {
+    
+    
+    if(image[sr][sc] == color)
+        return image;
+  
+    fill(image,sr,sc,color,image[sr][sc]);
+    return image;
+}
+
+const fill = function(image,sr,sc,color,cursor) {
+    
+    if(sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length || image[sr][sc] === color || image[sr][sc] !== cursor)
+    return;
+    
+    
+    image[sr][sc] = color
+    
+    fill(image, sr+1, sc, color, cursor)
+    fill(image, sr-1, sc, color, cursor)
+    fill(image, sr, sc+1, color, cursor)
+    fill(image, sr, sc-1, color, cursor)
+
+};
+
+
+/*
+
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+You may assume all four edges of the grid are all surrounded by water.
+
+*/
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+ var numIslands = function(grid) {
+    
+    let islandCount = 0;
+    
+    for(let i = 0; i < grid.length; i++)
+    {
+        for(let j = 0; j < grid[0].length; j++)
+        {
+            if(grid[i][j] == '1')
+            {
+                islandCount++;
+                DFS(grid,i,j);
+            }
+        }
+    }
+
+    function DFS(grid, i, j){
+        
+        if(i < 0 || j < 0 || i >= grid.length || j >= grid[0].length)
+        {
+            return;
+        }
+        
+        if(grid[i][j] == '1')
+        {
+            grid[i][j] = false;
+        
+            DFS(grid,i+1,j);
+            DFS(grid,i-1,j);
+            DFS(grid,i,j+1);
+            DFS(grid,i,j-1);
+         }
+    }
+
+    return islandCount;
+  
+};
+
+/*
+
+
+The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, 
+such that each number is the sum of the two preceding ones, starting from 0 and 1. That is,
+
+F(0) = 0, F(1) = 1
+F(n) = F(n - 1) + F(n - 2), for n > 1.
+
+Given n, calculate F(n).
+
+*/
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+ var fib = function(n) {   // n = 2, output = 1;
+    
+    if(n === 0)
+        return 0;
+    
+    if(n === 1 || n === 2)
+        return 1;
+    
+
+    var value1 = 1;
+    var value2 = 1;
+    
+    
+    while(n > 2)
+    {
+        var temp = value1 + value2;
+        value1 = value2;
+        value2 = temp;
+        n--;
+    }
+    
+    return value2;
+};
