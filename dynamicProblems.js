@@ -418,3 +418,121 @@ A string is called a palindrome string if the reverse of that string is the same
 
     return longDrome
 };
+
+
+/*
+You are given an integer array height of length n. There are n vertical lines drawn such that the 
+two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+*/
+
+//Input: height = [1,8,6,2,5,4,8,3,7]
+//Output: 49
+//Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. 
+//In this case, the max area of water (blue section) the container can contain is 49.
+
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+ var maxArea = function(height) {
+    let start = 0;
+    let end = height.length - 1;
+    let maxArea = -Infinity;
+
+    while(start < end) //[1,8,6,2,5,4,8,3,7]
+    {
+        let heightFinal = Math.min(height[start],height[end]);
+        maxArea = Math.max(maxArea, heightFinal * (end-start));
+    
+        //console.log("The value of final height : " , heightFinal);
+        //console.log("The value of maxArea : " , maxArea);
+
+        if(height[start] < height[end])
+            start++;
+        else
+            end--;
+    }
+    return maxArea;
+};
+
+
+//console.log(maxArea([1,8,6,2,5,4,8,3,7]));
+
+
+/*
+
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+*/
+
+//Input: nums = [-1,0,1,2,-1,-4]
+//Output: [[-1,-1,2],[-1,0,1]]
+//Explanation: 
+//nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+//nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+//nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+//The distinct triplets are [-1,0,1] and [-1,-1,2].
+//Notice that the order of the output and the order of the triplets does not matter.
+
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+ function threeSum(nums) {
+    const result = [];
+
+    if(nums.length < 3) return result;
+
+    nums = nums.sort((a,b) => a-b);
+    let target = 0;
+
+    for(let i = 0; i < nums.length-2; i++)
+    {
+        if(nums[i] > target) // no negative numbers to make it 0
+            break;
+        if(i > 0 && nums[i] === nums[i-1])
+            continue;
+        
+        let j = i + 1;
+        let k = nums.length - 1;
+
+        while(j < k)
+        {
+            const sum = nums[i] + nums[j] + nums[k]
+
+            if(sum === target)
+            {
+                result.push([nums[i],nums[j],nums[k]]);
+
+                while(nums[j] === nums[j+1])
+                    j++;
+                while(nums[k] === nums[k-1])
+                    k--;
+                j++;
+                k--;
+            }
+            else if(sum < target)
+            {
+                j++;
+            }
+            else
+            {
+                k--;
+            }
+
+        }
+    }
+    return result;
+ };
+
+ 
+ //console.log(threeSum([-1,0,1,2,-1,-4]))
